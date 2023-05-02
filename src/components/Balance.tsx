@@ -2,7 +2,7 @@ import React from 'react'
 import { UserService } from '../lib/services/UserService';
 import { User } from '../lib/types';
 
-function Balance({ user, setUser }: { user: User | undefined, setUser: React.Dispatch<React.SetStateAction<User | undefined>> }) {
+function Balance({ user, setUser, balance, setBalance }: { user: User | undefined, setUser: React.Dispatch<React.SetStateAction<User | undefined>>, balance: number, setBalance: React.Dispatch<React.SetStateAction<number>> }) {
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const userService = new UserService();
@@ -15,6 +15,7 @@ function Balance({ user, setUser }: { user: User | undefined, setUser: React.Dis
           ...user,
           balance
         } as User)
+        setBalance(balance)
       })
       .catch((err) => {
         console.error(err)
@@ -32,7 +33,7 @@ function Balance({ user, setUser }: { user: User | undefined, setUser: React.Dis
       ) : (
         <button
           className="btn"
-          onClick={resetBalance}>Balance ${user?.balance ?? '?'}</button >
+          onClick={resetBalance}>Balance ${balance}</button >
       )}
     </>
   )

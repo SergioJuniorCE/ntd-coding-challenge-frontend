@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { User } from "../lib/types";
 import { OperationService } from "../lib/services/OperationService";
 
-const Calculator = ({ user, setUser, setAlert }: { user: User | undefined, setUser: React.Dispatch<React.SetStateAction<User | undefined>>, setAlert: React.Dispatch<React.SetStateAction<string>> }) => {
+const Calculator = ({ user, setUser, setAlert, setBalance }: { user: User | undefined, setUser: React.Dispatch<React.SetStateAction<User | undefined>>, setAlert: React.Dispatch<React.SetStateAction<string>>, setBalance: React.Dispatch<React.SetStateAction<number>> }) => {
   const [input, setInput] = useState("0");
   const [parenthesesCount, setParenthesesCount] = useState(0);
 
@@ -25,7 +25,7 @@ const Calculator = ({ user, setUser, setAlert }: { user: User | undefined, setUs
         }
       })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   const endsWithOperator = (value?: string) => {
@@ -33,8 +33,8 @@ const Calculator = ({ user, setUser, setAlert }: { user: User | undefined, setUs
       return false
     }
 
-    if (!value) return operators.some((operator) => input.endsWith(operator));
-    return operators.some((operator) => input.endsWith(operator)) && input.endsWith(value);
+    if (!value) return operators.some((operator) => input.toString().endsWith(operator));
+    return operators.some((operator) => input.toString().endsWith(operator)) && input.toString().endsWith(value);
   }
 
   const handleClick = (value: string) => {
@@ -105,6 +105,7 @@ const Calculator = ({ user, setUser, setAlert }: { user: User | undefined, setUs
             }
             return prevUser;
           });
+          setBalance(res.balance);
           setIsLoadingInput(false);
         })
         .catch((err) => {

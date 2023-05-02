@@ -25,11 +25,13 @@ const queryClient = new QueryClient()
 function App() {
   const [alert, setAlert] = useState<string>("");
   const [user, setUser] = useState<User | undefined>();
+  const [balance, setBalance] = useState<number>(0);
+
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <CalculatorPage setAlert={setAlert} />,
+      element: <CalculatorPage setAlert={setAlert} setBalance={setBalance} />,
       errorElement: <ErrorPage />,
     },
     {
@@ -68,7 +70,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient} >
       <main className='pt-3 w-screen h-auto bg-gradient-to-r from-primary to-secondary animate-gradient'>
-        <Navbar user={user} setUser={setUser} />
+        <Navbar user={user} setUser={setUser} balance={balance} setBalance={setBalance}/>
         {alert !== "" && (
           <div className="content-center max-w-2xl">
             <Alert alert={alert} setAlert={setAlert} />

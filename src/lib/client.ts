@@ -5,7 +5,7 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
 
 export const client = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: import.meta.env.BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },

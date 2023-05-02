@@ -3,7 +3,7 @@ import Calculator from '../components/Calculator'
 import { User } from '../lib/types'
 import { UserService } from '../lib/services/UserService';
 
-function CalculatorPage({ setAlert }: { setAlert: React.Dispatch<React.SetStateAction<string>> }) {
+function CalculatorPage({ setAlert, setBalance }: { setAlert: React.Dispatch<React.SetStateAction<string>>, setBalance: React.Dispatch<React.SetStateAction<number>> }) {
   const [user, setUser] = useState<User | undefined>();
 
   const userService = new UserService();
@@ -23,7 +23,7 @@ function CalculatorPage({ setAlert }: { setAlert: React.Dispatch<React.SetStateA
       {user && (
         <>
           <h1 className='text-center text-4xl text-white'>Cost Ineffective Calculator</h1>
-          <Calculator user={user} setUser={setUser} setAlert={setAlert} />
+          <Calculator user={user} setUser={setUser} setAlert={setAlert} setBalance={setBalance}  />
         </>
       )}
     </>
