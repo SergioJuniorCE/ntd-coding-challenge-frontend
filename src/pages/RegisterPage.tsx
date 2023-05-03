@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react"
 import { UserService } from "../lib/services/UserService"
+import { Navigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { useAppDispatch } from "../hooks"
+import { register } from "../features/user"
 
 function RegisterPage() {
+  const dispatch = useAppDispatch()
+  const { registered } = useSelector((state: any) => state.user)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
   const [validForm, setValidForm] = useState(false);
 
   const userService = new UserService();
@@ -25,16 +30,10 @@ function RegisterPage() {
     }
   }, [email, password, confirmPassword])
 
+  if (registered) return <Navigate to="/login" />
+
   const handleRegister = () => {
-    userService.register(email, password)
-      .then(() => {
-        userService.login(email, password)
-          .then(() => {
-            window.location.href = '/'
-          })
-          .catch(err => console.error(err))
-      })
-      .catch(err => console.error(err))
+    dispatch(register({ email, password }))
   }
 
   const hanndleLoginRedirect = () => {
