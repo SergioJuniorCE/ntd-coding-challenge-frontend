@@ -8,10 +8,21 @@ export class BaseService {
   constructor(url: string) {
     this.baseUrl = config.baseUrl + url;
     this.axios = client;
-    const auth = Cookies.get('_auth');
-    if (auth) {
-      this.axios.defaults.headers.common.Authorization = `Bearer ${auth}`;
-    }
+  }
 
+  public getAuthHeader() {
+    return {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    }
+  }
+
+  public getToken() {
+    return Cookies.get('_auth');
+  }
+
+  public doesTokenExist() {
+    return !!this.getToken();
   }
 }

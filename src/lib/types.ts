@@ -1,8 +1,8 @@
 export type User = {
   username: string;
   password?: string;
-  status: boolean;
-  balance: number;
+  status?: boolean;
+  balance?: number;
 }
 
 export type TokenResponse = {

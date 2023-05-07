@@ -11,13 +11,14 @@ function Logout({ setUser }: { setUser: React.Dispatch<React.SetStateAction<User
     <button
       className="btn"
       onClick={() => {
+        signOut()
         userService.logout()
           .then(() => {
-            signOut()
             navigate('/login')
             setUser(undefined)
           })
           .catch(err => console.error(err))
+        window.location.reload()
       }}
     >Logout</button>
   )

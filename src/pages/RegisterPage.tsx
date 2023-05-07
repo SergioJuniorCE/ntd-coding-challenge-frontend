@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react"
 import { UserService } from "../lib/services/UserService"
+import { faker } from '@faker-js/faker';
+import { User } from "../lib/types";
 
-function RegisterPage() {
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+function RegisterPage({setUser }: { setUser: React.Dispatch<React.SetStateAction<User | undefined>> }) {
+  const pass = faker.internet.password(20);
+  const [email, setEmail] = useState(faker.internet.email())
+  const [password, setPassword] = useState(pass)
+  const [confirmPassword, setConfirmPassword] = useState(pass)
 
   const [validForm, setValidForm] = useState(false);
 
@@ -13,6 +15,7 @@ function RegisterPage() {
 
   useEffect(() => {
     const emailRegex = new RegExp(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/);
+
     if (
       emailRegex.test(email) &&
       password === confirmPassword &&
@@ -22,6 +25,9 @@ function RegisterPage() {
       setEmail(email.trim());
       setPassword(password.trim());
       setValidForm(true);
+    } else {
+      setValidForm(false);
+      alert("Please enter a valid email and password");
     }
   }, [email, password, confirmPassword])
 
@@ -29,8 +35,9 @@ function RegisterPage() {
     userService.register(email, password)
       .then(() => {
         userService.login(email, password)
-          .then(() => {
+          .then(({ user }) => {
             window.location.href = '/'
+            setUser(user)
           })
           .catch(err => console.error(err))
       })
@@ -55,6 +62,7 @@ function RegisterPage() {
               type="email"
               className="input input-bordered w-full max-w-xs"
               onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
           </div>
           <div className="form-control w-full max-w-xs">
@@ -65,6 +73,7 @@ function RegisterPage() {
               type="password"
               className="input input-bordered w-full max-w-xs"
               onChange={(e) => setPassword(e.target.value)}
+              value={password}
             />
           </div>
           <div className="form-control w-full max-w-xs mb-1">
@@ -75,6 +84,7 @@ function RegisterPage() {
               type="password"
               className="input input-bordered w-full max-w-xs"
               onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
             />
           </div>
           <button className={`btn ${!validForm ? 'btn-disabled' : 'btn-success'}`} onClick={handleRegister} >Register</button>

@@ -7,7 +7,7 @@ export class RecordsService extends BaseService {
 
   public async getRecords(page = 1, size = 10) {
 
-    const response = await this.axios.get(`${this.baseUrl}/?page=${page}&size=${size}`);
+    const response = await this.axios.get(`${this.baseUrl}/?page=${page}&size=${size}`, this.getAuthHeader());
     return response.data;
   }
 }

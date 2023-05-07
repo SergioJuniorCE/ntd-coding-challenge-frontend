@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { TokenResponse } from '../lib/types';
+import { useEffect, useState } from 'react';
+import { TokenResponse, User } from '../lib/types';
 import { useSignIn } from 'react-auth-kit';
 import { TokenService } from '../lib/services/TokenService';
 import { useNavigate } from "react-router-dom";
 
-function LoginPage() {
+function LoginPage({ setUser }: { setUser: React.Dispatch<React.SetStateAction<User | undefined>> }) {
 
   const signIn = useSignIn()
 
@@ -14,6 +14,13 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const tokenService = new TokenService();
+
+  useEffect(() => {
+    if (tokenService.doesTokenExist()) {
+      window.location.href = '/'
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleLogin = () => {
     tokenService.getTokens({ username, password })
@@ -27,6 +34,7 @@ function LoginPage() {
             username,
           }
         })
+        setUser({ username })
         navigate("/");
         // window.location.href = '/'
       })

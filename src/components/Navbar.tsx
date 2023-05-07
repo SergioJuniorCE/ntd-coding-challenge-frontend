@@ -18,7 +18,8 @@ function Navbar({ user, setUser, balance, setBalance }: {
       </div>
       <div className="navbar-end">
         {isAuthenticated && (
-          <div className="grid grid-cols-2 gap-2 tooltip tooltip-bottom" data-tip="Set balance to $20">
+          <div className="grid grid-cols-3 gap-3 tooltip tooltip-bottom" data-tip="Set balance to $20">
+            <p>Hello, {user?.username}</p>
             <Balance balance={balance} setBalance={setBalance} />
             <Logout setUser={setUser} />
           </div>

@@ -17,22 +17,39 @@ export class UserService extends BaseService {
   }
 
   public async logout() {
-    const response = await this.axios.post(`${this.baseUrl}/logout`);
+    console.log(this.getToken());
+    const response = await this.axios.post(`${this.baseUrl}/logout`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    });
     return response.data;
   }
 
   public async resetBalance() {
-    const { data } = await this.axios.post(`${this.baseUrl}/reset-balance`);
+    const { data } = await this.axios.post(`${this.baseUrl}/reset-balance`, {}, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    });
     return data.balance;
   }
 
   public async getBalance() {
-    const { data } = await this.axios.get(`${this.baseUrl}/get-balance`);
+    const { data } = await this.axios.get(`${this.baseUrl}/get-balance`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    });
     return data.balance;
   }
 
   public async getUser() {
-    const { data } = await this.axios.get(`${this.baseUrl}/user`);
+    const { data } = await this.axios.get(`${this.baseUrl}/user`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`
+      }
+    });
     return data;
   }
 }

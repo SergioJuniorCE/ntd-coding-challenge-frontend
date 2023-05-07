@@ -23,9 +23,6 @@ import Footer from './components/Footer';
 const queryClient = new QueryClient()
 
 function App() {
-
-
-
   const [alert, setAlert] = useState<string>("");
   const [user, setUser] = useState<User | undefined>();
   const [balance, setBalance] = useState<number>(0);
@@ -36,12 +33,13 @@ function App() {
   useEffect(() => {
     userService.getUser()
       .then((user: User) => {
+        console.log('user :>> ', user);
         setUser(user)
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .catch((err: any) => {
-        setUser(undefined)
         console.error(err)
+        setUser(undefined)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -67,7 +65,12 @@ function App() {
                 path="/"
                 element={
                   <RequireAuth loginPath='/login'>
-                    <CalculatorPage />
+                    <CalculatorPage
+                      user={user}
+                      setUser={setUser}
+                      setBalance={setBalance}
+                      setAlert={setAlert}
+                    />
                   </RequireAuth>
                 }
                 errorElement={<ErrorPage />}
@@ -82,12 +85,12 @@ function App() {
               />
               <Route
                 path="/login"
-                element={<LoginPage />}
+                element={<LoginPage setUser={setUser}/>}
                 errorElement={<ErrorPage />}
               />
               <Route
                 path="/register"
-                element={<RegisterPage />}
+                element={<RegisterPage setUser={setUser}/>}
                 errorElement={<ErrorPage />}
               />
             </Routes>

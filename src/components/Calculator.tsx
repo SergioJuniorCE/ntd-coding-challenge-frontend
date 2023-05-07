@@ -1,8 +1,19 @@
 import { IconDivide, IconEqual, IconMinus, IconParentheses, IconPlus, IconSquareRoot, IconX } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OperationService } from "../lib/services/OperationService";
+import { User } from "../lib/types";
 
-const Calculator = () => {
+const Calculator = ({ 
+  user,
+  setUser,
+  setBalance,
+  setAlert
+}: {
+  user: User | undefined,
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>,
+  setBalance: React.Dispatch<React.SetStateAction<number>>,
+  setAlert: React.Dispatch<React.SetStateAction<string>>
+}) => {
   const [input, setInput] = useState("0");
   const [parenthesesCount, setParenthesesCount] = useState(0);
 
@@ -12,20 +23,20 @@ const Calculator = () => {
 
   const operationService = new OperationService();
 
-  // useEffect(() => {
-  //   if (user && user.balance < 0) {
-  //     setAlert("Balance insufficient for calculation.");
-  //     setUser((prevUser) => {
-  //       if (prevUser) {
-  //         return {
-  //           ...prevUser,
-  //           balance: 0
-  //         }
-  //       }
-  //     })
-  //   }
-  //   eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user])
+  useEffect(() => {
+    if (user && user.balance && user.balance < 0) {
+      setAlert("Balance insufficient for calculation.");
+      setUser((prevUser) => {
+        if (prevUser) {
+          return {
+            ...prevUser,
+            balance: 0
+          }
+        }
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   const endsWithOperator = (value?: string) => {
     if (input === undefined) {
@@ -69,9 +80,10 @@ const Calculator = () => {
   const handleRandomString = () => {
     setIsLoadingInput(true);
     operationService.getRandomString()
-      .then((res) => {
+      .then(({ random_string, balance }) => {
         setIsLoadingInput(false);
-        setInput(res);
+        setInput(random_string);
+        setBalance(balance);
       })
       .catch((err) => {
         setIsLoadingInput(false);
@@ -91,22 +103,25 @@ const Calculator = () => {
       operationService.calculate(input)
         .then((res) => {
           setInput(res.result);
-          // setUser((prevUser) => {
-          //   if (prevUser) {
-          //     return {
-          //       ...prevUser,
-          //       balance: res.balance
-          //     }
-          //   }
-          //   return prevUser;
-          // });
-          // setBalance(res.balance);
+          setUser((prevUser) => {
+            if (prevUser) {
+              return {
+                ...prevUser,
+                balance: res.balance
+              }
+            }
+            return prevUser;
+          });
+          setBalance(res.balance);
           setIsLoadingInput(false);
         })
         .catch((err) => {
           setInput("Error");
-          console.error(err);
+          console.error(err.message);
           setIsLoadingInput(false);
+          if (err.message === 'Request failed with status code 402') {
+            setAlert("Balance insufficient for calculation.");
+          }
         })
 
 
