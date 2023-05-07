@@ -10,7 +10,6 @@ function Navbar({ user, setUser, balance, setBalance }: {
 }) {
   const isAuthenticated = user !== undefined;
 
-
   return (
     <div className="navbar bg-transparent text-primary-content">
       <div className="navbar-start">

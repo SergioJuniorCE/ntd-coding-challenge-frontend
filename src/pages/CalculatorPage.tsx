@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Calculator from '../components/Calculator'
 import { User } from '../lib/types'
 import { UserService } from '../lib/services/UserService';

@@ -1,5 +1,5 @@
 import { IconDivide, IconEqual, IconMinus, IconParentheses, IconPlus, IconSquareRoot, IconX } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { OperationService } from "../lib/services/OperationService";
 
 const Calculator = () => {
