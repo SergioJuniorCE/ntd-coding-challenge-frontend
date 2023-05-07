@@ -8,7 +8,10 @@ export class BaseService {
   constructor(url: string) {
     this.baseUrl = config.baseUrl + url;
     this.axios = client;
-    const auth = Cookies.get('_auth') ?? '';
-    this.axios.defaults.headers.common.Authorization = `Bearer ${auth}`;
+    const auth = Cookies.get('_auth');
+    if (auth) {
+      this.axios.defaults.headers.common.Authorization = `Bearer ${auth}`;
+    }
+
   }
 }
