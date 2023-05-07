@@ -1,9 +1,8 @@
 import { IconDivide, IconEqual, IconMinus, IconParentheses, IconPlus, IconSquareRoot, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { User } from "../lib/types";
 import { OperationService } from "../lib/services/OperationService";
 
-const Calculator = ({ user, setUser, setAlert, setBalance }: { user: User | undefined, setUser: React.Dispatch<React.SetStateAction<User | undefined>>, setAlert: React.Dispatch<React.SetStateAction<string>>, setBalance: React.Dispatch<React.SetStateAction<number>> }) => {
+const Calculator = () => {
   const [input, setInput] = useState("0");
   const [parenthesesCount, setParenthesesCount] = useState(0);
 
@@ -13,20 +12,20 @@ const Calculator = ({ user, setUser, setAlert, setBalance }: { user: User | unde
 
   const operationService = new OperationService();
 
-  useEffect(() => {
-    if (user && user.balance < 0) {
-      setAlert("Balance insufficient for calculation.");
-      setUser((prevUser) => {
-        if (prevUser) {
-          return {
-            ...prevUser,
-            balance: 0
-          }
-        }
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  // useEffect(() => {
+  //   if (user && user.balance < 0) {
+  //     setAlert("Balance insufficient for calculation.");
+  //     setUser((prevUser) => {
+  //       if (prevUser) {
+  //         return {
+  //           ...prevUser,
+  //           balance: 0
+  //         }
+  //       }
+  //     })
+  //   }
+  //   eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user])
 
   const endsWithOperator = (value?: string) => {
     if (input === undefined) {
@@ -82,10 +81,6 @@ const Calculator = ({ user, setUser, setAlert, setBalance }: { user: User | unde
   }
 
   const handleCalculate = () => {
-    if (!user) {
-      setAlert("Please login to calculate.");
-      return;
-    }
     try {
       if (input === "Error" || input.includes("undefined")) {
         setInput("");
@@ -96,16 +91,16 @@ const Calculator = ({ user, setUser, setAlert, setBalance }: { user: User | unde
       operationService.calculate(input)
         .then((res) => {
           setInput(res.result);
-          setUser((prevUser) => {
-            if (prevUser) {
-              return {
-                ...prevUser,
-                balance: res.balance
-              }
-            }
-            return prevUser;
-          });
-          setBalance(res.balance);
+          // setUser((prevUser) => {
+          //   if (prevUser) {
+          //     return {
+          //       ...prevUser,
+          //       balance: res.balance
+          //     }
+          //   }
+          //   return prevUser;
+          // });
+          // setBalance(res.balance);
           setIsLoadingInput(false);
         })
         .catch((err) => {

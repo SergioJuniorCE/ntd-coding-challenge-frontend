@@ -4,3 +4,8 @@ export type User = {
   status: boolean;
   balance: number;
 }
+
+export type TokenResponse = {
+  access: string;
+  refresh: string;
+}

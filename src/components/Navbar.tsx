@@ -1,9 +1,15 @@
-import { User } from "../lib/types"
+import { User } from "../lib/types";
 import Balance from "./Balance"
 import Logout from "./Logout"
 
-function Navbar({ user, setUser, balance, setBalance }: { user: User | undefined, setUser: React.Dispatch<React.SetStateAction<User | undefined>>, balance: number, setBalance: React.Dispatch<React.SetStateAction<number>> }) {
-  // Create a navbar using tailwind ui with the user balance to the right
+function Navbar({ user, setUser, balance, setBalance }: {
+  user: User | undefined,
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>,
+  balance: number,
+  setBalance: React.Dispatch<React.SetStateAction<number>>
+}) {
+  const isAuthenticated = user !== undefined;
+
 
   return (
     <div className="navbar bg-transparent text-primary-content">
@@ -12,10 +18,10 @@ function Navbar({ user, setUser, balance, setBalance }: { user: User | undefined
         <a href="/records" className="btn btn-ghost normal-case text-xl">Records</a>
       </div>
       <div className="navbar-end">
-        {user !== undefined && (
+        {isAuthenticated && (
           <div className="grid grid-cols-2 gap-2 tooltip tooltip-bottom" data-tip="Set balance to $20">
-            <Balance user={user} setUser={setUser} balance={balance} setBalance={setBalance}/>
-            <Logout />
+            <Balance balance={balance} setBalance={setBalance} />
+            <Logout setUser={setUser} />
           </div>
         )}
       </div>

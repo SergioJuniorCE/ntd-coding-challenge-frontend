@@ -1,8 +1,7 @@
 import React from 'react'
 import { UserService } from '../lib/services/UserService';
-import { User } from '../lib/types';
 
-function Balance({ user, setUser, balance, setBalance }: { user: User | undefined, setUser: React.Dispatch<React.SetStateAction<User | undefined>>, balance: number, setBalance: React.Dispatch<React.SetStateAction<number>> }) {
+function Balance({ balance, setBalance }: { balance: number, setBalance: React.Dispatch<React.SetStateAction<number>> }) {
   const [loading, setLoading] = React.useState<boolean>(false)
 
   const userService = new UserService();
@@ -11,10 +10,6 @@ function Balance({ user, setUser, balance, setBalance }: { user: User | undefine
     setLoading(true)
     userService.resetBalance()
       .then(({ balance }) => {
-        setUser({
-          ...user,
-          balance
-        } as User)
         setBalance(balance)
       })
       .catch((err) => {
